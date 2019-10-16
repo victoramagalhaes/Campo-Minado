@@ -3,6 +3,8 @@ package unp.cm.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import unp.cm.excessao.ExplosaoExcessao;
+
 public class Campo {
 	
 	private final int linha;
@@ -40,5 +42,27 @@ public class Campo {
 		else {
 			return false;
 		}
+	}
+	void alternarMarcacao() {
+		if(!aberto) {
+			marcado = !marcado;
+		}
+	}
+		
+	boolean abrir() {
+		
+		if(!aberto && !marcado) {
+			aberto = true;
+		
+			if(minado) {
+				throw new ExplosaoExcessao();
+			}
+		}
+		
+		return false;
+	}
+	
+	boolean vizinhancaSegura() {
+		return vizinhos.stream().noneMatch(v -> v.minado);
 	}
 }
